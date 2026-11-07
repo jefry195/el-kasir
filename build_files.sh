@@ -7,10 +7,10 @@ export UV_LINK_MODE=copy
 # 1. Pastikan direktori staticfiles ada
 mkdir -p staticfiles
 
-# 2. Gunakan virtual environment agar Python dan seluruh paket terisolasi dan terbaca
+# 2. Gunakan virtual environment dengan python3 sistem
 if command -v uv >/dev/null 2>&1; then
-    echo "[Vercel Build] Membuat .venv menggunakan uv..."
-    uv venv .venv
+    echo "[Vercel Build] Membuat .venv menggunakan uv (--python python3)..."
+    uv venv --python python3 .venv
     echo "[Vercel Build] Menginstall dependensi ke dalam .venv..."
     uv pip install -r requirements.txt
     echo "[Vercel Build] Menjalankan collectstatic via .venv/bin/python..."
