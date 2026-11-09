@@ -9,6 +9,9 @@ https://docs.djangoproject.com/en/2.2/howto/deployment/wsgi/
 
 import os
 
+# Ensure Python 3.12 compatibility layer is loaded first
+import core.compat
+
 from django.core.wsgi import get_wsgi_application
 
 

@@ -3,6 +3,9 @@
 import os
 import sys
 
+# Ensure Python 3.12 compatibility layer is loaded first
+import core.compat
+
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')

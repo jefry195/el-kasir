@@ -1,5 +1,6 @@
 import os
 import socket
+import core.compat
 import django
 
 # 1. Setup Django settings

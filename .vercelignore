@@ -1,0 +1,16 @@
+.git
+.gitignore
+.circleci
+.travis.yml
+venv/
+.venv/
+.test_venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+*.bat
+server.log
+*.log

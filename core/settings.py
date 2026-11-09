@@ -11,11 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-import collections
-import collections.abc
-for _attr in ('MutableSet', 'MutableMapping', 'MutableSequence', 'Mapping', 'Sequence', 'Iterable'):
-    if not hasattr(collections, _attr):
-        setattr(collections, _attr, getattr(collections.abc, _attr))
+import core.compat
 
 import logging.config
 try:
@@ -72,14 +68,14 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'logfile': {
-            'class': 'logging.FileHandler',
-            'filename': 'server.log',
+        'console': {
+            'class': 'logging.StreamHandler',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['logfile'],
+            'handlers': ['console'],
+            'level': 'INFO',
         },
     },
 }
@@ -158,17 +154,36 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #     }
 # }
 
-"Demo"
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'cashier.db'),
-    }
-}
-
+"Database Configuration"
 import dj_database_url
+import shutil
+
 if os.environ.get('DATABASE_URL'):
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+    }
+elif os.environ.get('VERCEL'):
+    # Vercel serverless filesystem is read-only except /tmp
+    orig_db = os.path.join(BASE_DIR, 'cashier.db')
+    tmp_db = '/tmp/cashier.db'
+    if os.path.exists(orig_db) and not os.path.exists(tmp_db):
+        try:
+            shutil.copy2(orig_db, tmp_db)
+        except Exception:
+            pass
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': tmp_db if os.path.exists(tmp_db) else orig_db,
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'cashier.db'),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
