@@ -1,0 +1,121 @@
+/* Custom Responsive Styles for Kasir POS on All Devices */
+
+/* Mobile view adjustments (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Sidebar handling on mobile */
+  .sidebar {
+    width: 100% !important;
+  }
+  
+  .sidebar.toggled {
+    display: none !important;
+  }
+
+  /* Reduce padding on mobile */
+  .container-fluid {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  .card-body {
+    padding: 1rem !important;
+  }
+
+  /* Form controls touch targets */
+  .form-control, .btn {
+    min-height: 42px;
+    font-size: 0.95rem;
+  }
+
+  /* Table responsiveness */
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+    border: 1px solid #e3e6f0;
+    border-radius: 0.35rem;
+  }
+
+  .table td, .table th {
+    white-space: nowrap;
+    padding: 0.5rem !important;
+  }
+
+  /* POS Cart & Input Table inputs */
+  .order-list select,
+  .order-list input,
+  #inputDataTable select,
+  #inputDataTable input {
+    min-width: 110px;
+  }
+
+  /* Date filters on Report Page */
+  .report-filter-bar {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+
+  .report-filter-bar input,
+  .report-filter-bar button {
+    width: 100% !important;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Header brand */
+  .sidebar-brand-text {
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablet view adjustments (min-width: 769px and max-width: 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sidebar {
+    width: 6.5rem !important;
+  }
+  
+  .sidebar .nav-item .nav-link span {
+    font-size: 0.65rem;
+  }
+}
+
+/* Common responsive polish */
+.table-responsive {
+  border-radius: 0.35rem;
+}
+
+.table th {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge, .btn {
+  border-radius: 0.25rem;
+}
+
+/* Card shadows and rounded corners */
+.card {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+/* Print styles for Receipt (Struk) */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-receipt, #printable-receipt * {
+    visibility: visible;
+  }
+  #printable-receipt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

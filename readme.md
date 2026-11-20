@@ -8,9 +8,13 @@
 
 
 
-You can also see the live demo [here](https://kasir.herokuapp.com). <br>
-with user: `admin` <br>
-password: `demoadmin` (**The demo can take a time to load**)
+### Akun Login Default
+- **Username:** `admin`
+- **Password:** `admin`
+- **Akses:** `/login/` atau `/admin/` (Jet Admin Dashboard)
+- **Registrasi Akun Baru:** `/register/`
+
+> Rincian kendala deploy dan penyelesaian bug Vercel dapat dilihat di [DOKUMENTASI_BUG_VERCEL.md](DOKUMENTASI_BUG_VERCEL.md).
 
 
 Read more the flowchart and the pattern models [here](/cashierModel.md)

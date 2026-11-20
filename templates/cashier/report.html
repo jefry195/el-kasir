@@ -2,59 +2,63 @@
 {% load static %}
 {% block content %}
 {% load humanize %}
-{% block extra_head_content  %}
 
-{{block.super}}
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-{% endblock %}
+<div class="mb-4">
+  <h1 class="h3 mb-1 text-gray-800">Laporan Penjualan</h1>
+  <p class="text-muted small">Rekapitulasi transaksi dan laporan harian / bulanan toko.</p>
+</div>
 
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-          <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Data Laporan</h1>
-          <p class="mb-4">Data laporan harian dan bulanan</p>
-          <!-- DataTales Example -->
-          <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Laporan Penjualan</h6>
-            </div>
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Filter Periode Laporan</h6>
+  </div>
 
-              <!--Sort By Date and Mo   nth-->
-            <div class="d-flex p-4">
-                <input class="btn btn-outline-secondary" type="date" id="sortTableDataStart" name="dateData" placeholder="Input Sort"/>
-                <span>&nbsp; &nbsp; &nbsp;</span>
-                <input class="btn btn-outline-secondary" type="date" id="sortTableDataEnd" name="dateData" placeholder="Input Sort"/>
-                <span>&nbsp; &nbsp; &nbsp;</span>
-                <button class="btn btn-outline-success" type="submit" id=sortTable>Cari <i class="fas fa-search"></i></button>
-            </div>
-            <div class="card-body">
-              {% include "cashier/report_details.html" %}
-            </div>
-          </div>
-        </div>
-        <!-- /.container-fluid -->
+  <div class="card-body">
+    <!-- Filter Bar Responsive -->
+    <div class="row align-items-center mb-4">
+      <div class="col-12 col-sm-6 col-md-4 mb-2 mb-md-0">
+        <label class="small font-weight-bold text-gray-600">Tanggal Mulai:</label>
+        <input class="form-control form-control-sm" type="date" id="sortTableDataStart" name="dateData" />
       </div>
-      <!-- End of Main Content -->
-      <script>
-        $(document).ready(function() {
-          $('#sortTable').on('click', function() {
-            if ($('#sortTableDataStart').val() != ''){
-                $.ajax({
-                    'method': 'GET',  // defaults to GET. Set POST if you like, but be aware of the CSRF token submission too!
-                    'url': "{% url 'ReportView'%}" , // submit to the same url
-                    'data': {startDate : $('#sortTableDataStart').val(),endDate : $('#sortTableDataEnd').val() },
-                    success: function(dataReturned) {
-                        $('#reportDataTable').replaceWith(dataReturned);
-                    },
-                });
-             }else{
-                alert('Tanggal Harus di isi')
-             }
-          });
-      });
+      <div class="col-12 col-sm-6 col-md-4 mb-2 mb-md-0">
+        <label class="small font-weight-bold text-gray-600">Tanggal Akhir:</label>
+        <input class="form-control form-control-sm" type="date" id="sortTableDataEnd" name="dateData" />
+      </div>
+      <div class="col-12 col-md-4 align-self-end">
+        <button class="btn btn-primary btn-sm btn-block font-weight-bold py-2" type="button" id="sortTable">
+          <i class="fas fa-search mr-1"></i> Cari Data
+        </button>
+      </div>
+    </div>
 
+    <div class="table-responsive">
+      {% include "cashier/report_details.html" %}
+    </div>
+  </div>
+</div>
 
-
-
-      </script>
+<script>
+  $(document).ready(function() {
+    $('#sortTable').on('click', function() {
+      if ($('#sortTableDataStart').val() != '') {
+        $.ajax({
+          'method': 'GET',
+          'url': "{% url 'ReportView' %}",
+          'data': {
+            startDate: $('#sortTableDataStart').val(),
+            endDate: $('#sortTableDataEnd').val()
+          },
+          success: function(dataReturned) {
+            $('#reportDataTable').replaceWith(dataReturned);
+          },
+          error: function() {
+            alert('Gagal memuat data laporan.');
+          }
+        });
+      } else {
+        alert('Tanggal Mulai harus diisi.');
+      }
+    });
+  });
+</script>
 {% endblock %}

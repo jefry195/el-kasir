@@ -1,55 +1,90 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-
 {% load static %}
 {% block content %}
 {% load humanize %}
 
+<div class="mb-4 no-print">
+  <h1 class="h3 mb-1 text-gray-800">Nota Pembelian</h1>
+  <p class="text-muted small">Cetak atau simpan struk bukti transaksi.</p>
+</div>
 
-        <div class="container-fluid">
-          <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Nota Pembelian</h1>
-           <p style="color:red;"><b>Pastikan Printer anda sudah terhubung jika ingin melakukan cetak struck pembelian.</b></p>
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8 col-lg-6">
+    <div class="card shadow mb-4" id="printable-receipt">
+      <div class="card-header py-3 bg-primary text-white text-center">
+        <h5 class="m-0 font-weight-bold">STRUK PEMBELIAN</h5>
+        <small>CPM Cashier System</small>
+      </div>
 
-          <!-- DataTales Example -->
-          <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Struck Print</h6>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
-                  <thead>
-                    <tr class="table-success">
-<!--                      <th>Nomor</th>-->
-                      <th>Nama Barang</th>
-                      <th>Jumlah Barang</th>
-                      <th>Jumlah Harga</th>
-                    </tr>
-                  </thead>
-                     Nomor Nota: {{dataStruck.nomor}}<br>
-                     Nama Kasir: <b style="color:black;">{{dataUser.nama_depan}} {{dataUser.nama_belakang}}</b> <br>
-                     E-mail: <i><u>{{dataUser.email}}</u></i><br>
-                     Tanggal & Bulan : <b>{{dataStruck.created}}</b>
-                  <tbody>
-                        {%for produk in dataStruckListProduk%}
-                             <tr>
-                                    <td>{{produk.nama_barang}}</td><br>
-                                    <td>{{produk.quantity}}</td>
-                                    <td><b style="color:black;">Rp. {{produk.subtotal|intcomma}}</b></td>
-                             </tr>
-                        {%endfor%}
-                  </tbody>
-                   <tfoot>
-                     <tr>
-                         <td colspan="2"><b style="color:black;">TOTAL</b></td>
-                         <td><b style="color:red;">Rp. {{dataStruck.total|intcomma}}</b></td>
-                     </tr>
-                   </tfoot>
-                </table>
-              </div>
-                <button type="button" class="btn btn-secondary btn-sm"><i class="fas fa-print"></i>  Print Struck</button>
-            </div>
+      <div class="card-body p-4">
+        <!-- Metadata Transaksi -->
+        <div class="border-bottom pb-3 mb-3 small">
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">Nomor Nota:</span>
+            <span class="font-weight-bold text-dark">#{{ dataStruck.nomor }}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">Kasir:</span>
+            <span class="font-weight-bold text-dark">{{ dataUser.nama_depan }} {{ dataUser.nama_belakang }}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">E-mail:</span>
+            <span>{{ dataUser.email|default:"-" }}</span>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span class="text-muted">Tanggal:</span>
+            <span>{{ dataStruck.created|date:"d M Y, H:i" }}</span>
           </div>
         </div>
+
+        <!-- Daftar Barang -->
+        <div class="table-responsive">
+          <table class="table table-sm table-borderless mb-0">
+            <thead class="border-bottom">
+              <tr class="small text-muted font-weight-bold">
+                <th>Produk</th>
+                <th class="text-center">Qty</th>
+                <th class="text-right">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for produk in dataStruckListProduk %}
+                <tr>
+                  <td class="font-weight-bold text-dark">{{ produk.nama_barang }}</td>
+                  <td class="text-center">{{ produk.quantity }}</td>
+                  <td class="text-right">Rp. {{ produk.subtotal|intcomma }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot class="border-top">
+              <tr>
+                <td colspan="2" class="font-weight-bold text-dark h6 pt-3">TOTAL:</td>
+                <td class="text-right font-weight-bold text-danger h5 pt-3">
+                  Rp. {{ dataStruck.total|intcomma }}
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div class="text-center small text-muted mt-4 pt-3 border-top">
+          <p class="mb-0">Terima kasih atas kunjungan Anda!</p>
+          <p class="mb-0">Barang yang sudah dibeli tidak dapat ditukar.</p>
+        </div>
+
+        <!-- Tombol Aksi (disembunyikan saat cetak) -->
+        <div class="no-print mt-4 d-flex gap-2 justify-content-between">
+          <a href="{% url 'DaftarPembelian' %}" class="btn btn-outline-secondary btn-sm">
+            <i class="fas fa-arrow-left mr-1"></i> Kembali
+          </a>
+          <button type="button" class="btn btn-primary btn-sm font-weight-bold" onclick="window.print()">
+            <i class="fas fa-print mr-1"></i> Cetak Struk
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

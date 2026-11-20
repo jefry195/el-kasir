@@ -3,82 +3,83 @@
 {% load static %}
 {% block content %}
 
-<!--Total Stock-->
-        <!-- Begin Page Content -->
-      <div class="container-fluid">
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-          <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Transaksi Jual-Beli</h1>
-           <h6><strong style="color:red;">Pastikan anda telah memeriksa barang yang akan dibeli sesuai dengan permintaan</strong></h6>
+<!-- Transaksi Jual-Beli -->
+<div class="mb-4">
+  <h1 class="h3 mb-1 text-gray-800">Transaksi Jual-Beli</h1>
+  <p class="text-danger small font-weight-bold mb-3">Pastikan Anda telah memeriksa barang yang akan dibeli sesuai dengan permintaan.</p>
+</div>
 
-          <!-- DataTales Example -->
-          <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Form Transaksi Jual-Beli</h6>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
+<div class="card shadow mb-4">
+  <div class="card-header py-3 d-flex align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">Form Transaksi Kasir</h6>
+  </div>
+  <div class="card-body">
+    <form method="post" enctype="application/x-www-form-urlencoded">
+      {% csrf_token %}
+      {{ forms.management_form }}
 
-               <form method="post" enctype="application/x-www-form-urlencoded">
-                  {% csrf_token %}
-                  <div class="container">
-                  <table id="myTable" class=" table order-list">
-                  <thead>
-                      <tr class="table-secondary">
-                          <td>Name</td>
-                          <td>Quantity</td>
-                      </tr>
-                  </thead>
-                  <tbody>
-                     <div>
-                           {{forms.management_form}}
-                           {% for form in forms %}
-                              <tr id="mainForm">
-                                 <td class="col-sm-3">
-                                     <select name=form-0-{{form.nama_barang.name}}>
-                                        {% for nama_product in data_barang %}
-                                           <option value="{{ nama_product.nomor }}">{{nama_product}}</option>
-                                        {% endfor %}
-                                     </select>
-                                 </td>
-                                 <td class="col-sm-4">{{ form.quantity }}</td>
-                                 <!--<td class="col-sm-4">{{ form.subtotal }}</td>-->
-                                 <input value="{{request_user}}" type="hidden" name="form-0-{{form.user.name}}">
-                                 <td class="col-sm-2"><a class="deleteRow"></a></td>
-                              </tr>
-                           {%endfor%}
-                     </div>
-                  </tbody>
-                  <tfoot id="AdderTransactionForm" class="adderForm">
-                       <tr id="EmptyForm" style="display:none">
-                              <td class="col-sm-3">
-                                 <select name="form-__prefix__-nama_barang" id="id_form-__prefix__-nama_barang">
-                                    {% for nama_product in data_barang %}
-                                       <option value="{{ nama_product.nomor }}">{{nama_product}}</option>
-                                    {% endfor %}
-                                 </select>
-                              </td>
-                              <td class="col-sm-4">{{forms.empty_form.quantity}}</td>
-                              <input value="{{request_user}}" type="hidden" name="form-__prefix__-user" id="id_form-__prefix__-user">
-                              <td> <button id="btnDelete" class="btn btn-outline-primary btn-sm">Hapus</button></td>
-                       </tr>
-                  </tfoot>
-              </table>
-                      <input type="button" class="btn btn-outline-info btn-sm" id="transactionAdderForm" value="Tambah Barang" />
-              </div>
-                  <div>
-                     <br>
-                     <button class="btn btn-outline-primary btn-sm" type="submit">Bayar</button>
+      <div class="table-responsive">
+        <table id="myTable" class="table table-bordered order-list mb-3" width="100%">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col" style="min-width: 180px;">Nama Produk</th>
+              <th scope="col" style="min-width: 100px;">Jumlah</th>
+              <th scope="col" style="width: 80px;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for form in forms %}
+              <tr id="mainForm">
+                <td>
+                  <select name="form-0-{{ form.nama_barang.name }}" class="form-control form-control-sm">
+                    {% for nama_product in data_barang %}
+                      <option value="{{ nama_product.nomor }}">{{ nama_product }}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td>
+                  <div class="input-group input-group-sm">
+                    {{ form.quantity }}
                   </div>
-                </form>
-                </table>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <!-- /.container-fluid -->
+                </td>
+                <input value="{{ request_user }}" type="hidden" name="form-0-{{ form.user.name }}">
+                <td class="text-center align-middle">
+                  <a class="deleteRow btn btn-danger btn-sm text-white" style="cursor: pointer;"><i class="fas fa-trash fa-sm"></i></a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot id="AdderTransactionForm" class="adderForm">
+            <tr id="EmptyForm" style="display:none">
+              <td>
+                <select name="form-__prefix__-nama_barang" id="id_form-__prefix__-nama_barang" class="form-control form-control-sm">
+                  {% for nama_product in data_barang %}
+                    <option value="{{ nama_product.nomor }}">{{ nama_product }}</option>
+                  {% endfor %}
+                </select>
+              </td>
+              <td>
+                <div class="input-group input-group-sm">
+                  {{ forms.empty_form.quantity }}
+                </div>
+              </td>
+              <input value="{{ request_user }}" type="hidden" name="form-__prefix__-user" id="id_form-__prefix__-user">
+              <td class="text-center align-middle">
+                <button type="button" id="btnDelete" class="btn btn-danger btn-sm"><i class="fas fa-trash fa-sm"></i></button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
       </div>
-      <!-- End of Main Content -->
+
+      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center gap-2 mt-3">
+        <input type="button" class="btn btn-outline-info btn-sm mb-2 mb-sm-0 py-2 px-3" id="transactionAdderForm" value="+ Tambah Barang" />
+        <button class="btn btn-primary btn-sm py-2 px-4 font-weight-bold" type="submit">
+          <i class="fas fa-cash-register mr-1"></i> Proses Bayar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 {% endblock %}
