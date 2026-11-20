@@ -14,7 +14,9 @@
 - **Akses:** `/login/` atau `/admin/` (Jet Admin Dashboard)
 - **Registrasi Akun Baru:** `/register/`
 
-> Rincian kendala deploy dan penyelesaian bug Vercel dapat dilihat di [DOKUMENTASI_BUG_VERCEL.md](DOKUMENTASI_BUG_VERCEL.md).
+### Dokumentasi Teknis
+- [DOKUMENTASI_BUG_APLIKASI_KASIR.md](DOKUMENTASI_BUG_APLIKASI_KASIR.md) - Rincian 18 temuan bug dan celah logika sistem kasir (non-Vercel).
+- [DOKUMENTASI_BUG_VERCEL.md](DOKUMENTASI_BUG_VERCEL.md) - Rincian kendala deploy dan solusi runtime serverless Vercel.
 
 
 Read more the flowchart and the pattern models [here](/cashierModel.md)
