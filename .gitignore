@@ -1,5 +1,5 @@
 .idea/
-staticfiles/
+staticfiles_build/
 __pycache__/
 *.py[cod]
 *$py.class
